@@ -2,6 +2,12 @@
 
 An English vocabulary card collection project for US students in grades 7–12, currently focused on ninth grade.
 
+**[Open the website](https://sydjj1225tc.github.io/vocabcardgame/)**
+
+## Publishing
+
+GitHub Pages publishes this repository from the root of `main`. Pushing changes to `main` triggers the Pages build and deployment. The root `index.html` opens the card collection; `.nojekyll` serves the standalone HTML and assets directly.
+
 ## View locally
 
 Open `Vocab Card Game/codes/collection.html` in a browser. Cards work offline.
