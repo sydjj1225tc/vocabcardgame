@@ -1,0 +1,53 @@
+[
+  {
+    "word": "value",
+    "powerPoints": 150,
+    "partOfSpeech": "Noun · Verb",
+    "source": "https://www.oxfordlearnersdictionaries.com/us/definition/english/value_1",
+    "imageDescription": "The guardian alone uses a lantern to illuminate stepping stones in a cavern, with a pile of coins nearby",
+    "image": "assets/value-background-v2.png",
+    "definitions": [
+      "1. (Noun) An item’s worth in money or exchangeable goods",
+      "2. (Noun, chiefly British) Worth relative to price",
+      "3. (Noun) Usefulness or importance",
+      "4. (Plural noun: values) Beliefs about right, wrong, and what matters in life",
+      "5. (Noun, mathematics) The quantity a letter or symbol stands for",
+      "6. (Verb) To regard a person or thing as important",
+      "7. (Verb) To estimate something’s monetary worth"
+    ],
+    "definitionNote": "Definitions based on Oxford numbered headword senses; value uses concise paraphrases. Idioms and separate compound entries are not headword senses.",
+    "sources": [
+      "https://www.oxfordlearnersdictionaries.com/us/definition/english/value_1",
+      "https://www.oxfordlearnersdictionaries.com/us/definition/english/value_2"
+    ],
+    "rarity": "normal"
+  },
+  {
+    "word": "obtain",
+    "powerPoints": 130,
+    "partOfSpeech": "Verb",
+    "source": "https://www.oxfordlearnersdictionaries.com/us/definition/english/obtain",
+    "imageDescription": "The tired but delighted guardian holds a star crystal after climbing rocky steps to reach a treasure chest",
+    "image": "assets/obtain-background.png",
+    "definitions": [
+      "1. To get something, especially by making an effort",
+      "2. To exist, referring to rules, systems, or customs"
+    ],
+    "definitionNote": "Definitions based on Oxford numbered headword senses; value uses concise paraphrases. Idioms and separate compound entries are not headword senses.",
+    "rarity": "normal"
+  },
+  {
+    "word": "differ",
+    "powerPoints": 110,
+    "partOfSpeech": "Verb",
+    "source": "https://www.oxfordlearnersdictionaries.com/us/definition/english/differ",
+    "imageDescription": "The guardian compares a short round blue flower and a tall pointed orange flower in matching pots",
+    "image": "assets/differ-background.png",
+    "definitions": [
+      "1. To be different from somebody or something",
+      "2. To disagree with somebody"
+    ],
+    "definitionNote": "Definitions based on Oxford numbered headword senses; value uses concise paraphrases. Idioms and separate compound entries are not headword senses.",
+    "rarity": "normal"
+  }
+]

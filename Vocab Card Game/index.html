@@ -1,0 +1,462 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Vocab Card Game · Morality</title>
+  <!--
+    CODE READING MAP
+    1. CSS = appearance (colors, spacing, layout).
+    2. HTML = content (card, instructions, buttons).
+    3. JavaScript = behavior (draw, check answers, collect).
+    Start with the HTML and section 3B to follow the learning experience.
+    Everything stays in this file and works without the internet.
+  -->
+  <style>
+    /* 1. APPEARANCE
+       A selector names what to style: .card is a class; #feedback is an ID.
+       Each property: value pair changes one visual feature.
+       px means pixels. Colors such as #f3cc7b are hexadecimal color codes. */
+    * {
+      box-sizing:border-box
+    }
+    body {
+      margin:0;
+      color:#f7f0ff;
+      background:radial-gradient(ellipse at 25% 45%,#362150,#100e20 75%);
+      font:16px system-ui,sans-serif;
+      min-height:100vh
+    }
+    header {
+      padding:26px 5%;
+      display:flex;
+      justify-content:space-between;
+      border-bottom:1px solid #ffffff18;
+      font-size:13px;
+      letter-spacing:1px
+    }
+    header b {
+      color:#f4d184
+    }
+    main {
+      max-width:1000px;
+      margin:auto;
+      padding:45px 24px;
+      display:grid;
+      grid-template-columns:400px 1fr;
+      gap:75px;
+      align-items:center
+    }
+    /* Card frame and content */
+    .card {
+      border:9px solid #e5b64e;
+      border-radius:25px;
+      background:#281344;
+      box-shadow:0 0 0 2px #fff2a0,inset 0 0 0 3px #704013,0 25px 70px #0008;
+      overflow:hidden;
+      transform:rotate(-2deg)
+    }
+    .title {
+      padding:15px 20px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      background:linear-gradient(120deg,#7042aa,#211238);
+      border-bottom:4px solid #e7b74a
+    }
+    h1 {
+      margin:0;
+      font-size:37px;
+      color:#fff8dd;
+      text-shadow:2px 3px #100621
+    }
+    .badge {
+      font-size:12px;
+      font-weight:900;
+      background:linear-gradient(#26b2d7,#1755a3);
+      padding:12px 8px;
+      border:2px solid #d3eeff;
+      border-radius:7px 7px 20px 20px
+    }
+    svg {
+      display:block;
+      width:100%
+    }
+    .meaning {
+      background:linear-gradient(130deg,#fffbe9,#e0d9f1);
+      color:#352b43;
+      padding:22px 19px;
+      border-top:4px solid #e3b14c;
+      min-height:144px
+    }
+    .meaning b {
+      font-size:11px;
+      letter-spacing:1px;
+      color:#73551c
+    }
+    .meaning p {
+      font-size:18px;
+      line-height:1.4;
+      margin:8px 0 0
+    }
+    .foot {
+      padding:12px;
+      text-align:center;
+      font-size:10px;
+      letter-spacing:2px;
+      color:#f0cd74
+    }
+    .eyebrow {
+      font-size:11px;
+      letter-spacing:2px;
+      color:#e0b86c;
+      font-weight:800
+    }
+    h2 {
+      font-size:42px;
+      line-height:1.1;
+      letter-spacing:-1.5px;
+      margin:18px 0
+    }
+    section p {
+      color:#bfb5d0;
+      line-height:1.7
+    }
+    .cue {
+      border-left:3px solid #e5b766;
+      padding-left:18px;
+      margin:25px 0
+    }
+    .cue p {
+      font-size:14px;
+      margin:7px 0
+    }
+    /* Shared controls and visible feedback */
+    button {
+      font:700 14px system-ui;
+      cursor:pointer;
+      border-radius:9px;
+      padding:15px 18px;
+      width:100%;
+      border:1px solid transparent;
+      background:#f3cc7b;
+      color:#2c2034
+    }
+    button:hover {
+      filter:brightness(1.12)
+    }
+    button:focus-visible {
+      outline:3px solid #84e4eb;
+      outline-offset:4px
+    }
+    .option {
+      display:block;
+      text-align:left;
+      background:#ffffff08;
+      border-color:#ffffff30;
+      color:#f8f1ff;
+      margin:10px 0;
+      line-height:1.5
+    }
+    .secondary {
+      background:transparent;
+      color:#bfb5d0;
+      border-color:#ffffff20;
+      margin-top:12px
+    }
+    .correct {
+      background:#235b4e;
+      border-color:#89e3bd
+    }
+    .incorrect {
+      border-color:#ffb09c
+    }
+    #feedback {
+      color:#efd18a;
+      font-size:14px
+    }
+    .note {
+      font-size:11px;
+      color:#9385a4
+    }
+    [hidden] {
+      display:none!important
+    }
+    /* On smaller screens, stack the card above the activity. */
+    @media(max-width:760px) {
+      main {
+        max-width:440px;
+        grid-template-columns:1fr;
+        gap:35px;
+        padding:30px 20px
+      }
+      /* Card frame and content */
+    .card {
+        transform:none
+      }
+      h2 {
+        font-size:34px
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 2. HTML: the content learners see. IDs give JavaScript a way to find elements. -->
+  <header>
+    <b>✦ VOCAB CARD GAME</b>
+    <span id="count" aria-live="polite">Collection · 0 / 1</span>
+  </header>
+  <main>
+    <!-- The card stays visible during all three learning steps. -->
+    <article class="card">
+      <div class="title">
+        <h1>morality</h1>
+        <span class="badge">NOUN</span>
+      </div>
+      <svg id="art" viewBox="0 0 400 370" role="img" aria-label="A smiling golden moral compass points toward honesty and care, away from cheating and harm.">
+      </svg>
+      <div class="meaning">
+        <b>MEANING</b>
+        <p id="definition">Principles relating to right and wrong or good and bad behavior.</p>
+        <p id="prompt" hidden>Recall the meaning.<br>Let the compass be your clue.</p>
+      </div>
+      <div class="foot">✦ THE MORAL COMPASS · 001</div>
+    </article>
+    <section>
+      <div class="eyebrow">WORD QUEST / 001</div>
+      <!-- STEP A: explain the word and its mnemonic. -->
+      <div id="study">
+        <h2>Find your<br>moral compass.</h2>
+        <p>Meet morality: the principles that help us judge right and wrong behavior.</p>
+        <div class="cue">
+          <strong>Morality → your moral compass</strong>
+          <p>A compass guides your direction.<br>Morality guides your choices.</p>
+        </div>
+        <button id="start">Test your recall →</button>
+        <p class="note">Study the picture. Recall the meaning. Earn the card.</p>
+      </div>
+      <!-- STEP B: hide the definition and invite retrieval. hidden means initially invisible. -->
+      <div id="quiz" hidden>
+        <h2>Let the picture<br>jog your memory.</h2>
+        <p>Which meaning belongs to <strong>morality</strong>?</p>
+        <button class="option" data-correct="false" data-feedback="identity">The qualities that make a person unique.</button>
+        <button class="option" data-correct="true">Principles relating to right and wrong or good and bad behavior.</button>
+        <button class="option" data-correct="false" data-feedback="direction">The ability to find your way to a place.</button>
+        <p id="feedback" role="status">
+      </p>
+      <button id="collect" hidden>Add to my collection ✦</button>
+      <button id="review" class="secondary">Study the card again</button>
+    </div>
+    <!-- STEP C: reward success and prompt transfer to an everyday situation. -->
+    <div id="done" hidden>
+      <div class="eyebrow">✦ CARD COLLECTED</div>
+      <h2>A new word.<br>A stronger compass.</h2>
+      <p>Morality is about principles for right and wrong behavior. Honesty and care are examples of those principles.</p>
+      <div class="cue">
+        <strong>Make it stick</strong>
+        <p>How might morality guide someone who finds a lost wallet? Say your answer aloud.</p>
+      </div>
+      <button id="again">Practice again ↻</button>
+    </div>
+  </section>
+</main>
+
+<script>
+// 3A. DRAW THE MNEMONIC
+// SVG is an image made of shapes. Its drawing area is 400 by 370 units.
+// x runs left to right; y runs top to bottom. A circle uses cx, cy, and r
+// for its center and radius. fill sets color; stroke sets the outline.
+// Paths draw custom shapes: M = move, L = line, Q = curve, Z = close.
+// You can skip the shape coordinates when reviewing the learning logic.
+const artwork = document.getElementById('art');
+
+function drawCompass() {
+  // Backticks hold a multi-line string (a piece of text containing SVG).
+  // innerHTML places this trusted, fixed artwork inside the SVG element.
+  artwork.innerHTML = `
+    <!-- Color recipes. Other shapes reuse these gradients by their IDs. -->
+    <defs>
+    <radialGradient id="bg">
+    <stop stop-color="#8260c9"/>
+    <stop offset="1" stop-color="#251442"/>
+    </radialGradient>
+    <linearGradient id="gold" x2=".8" y2="1">
+    <stop stop-color="#fff5a3"/>
+    <stop offset=".5" stop-color="#ffd24e"/>
+    <stop offset="1" stop-color="#c88025"/>
+    </linearGradient>
+    <radialGradient id="face" cx=".3" cy=".3">
+    <stop stop-color="#fffce4"/>
+    <stop offset="1" stop-color="#ffe49b"/>
+    </radialGradient>
+    </defs>
+    <rect width="400" height="370" fill="url(#bg)"/>
+    <g id="stars" fill="#ffedac">
+    </g>
+    <ellipse cx="200" cy="329" rx="125" ry="15" fill="#160d36" opacity=".6"/>
+    <path d="M75 279 Q20 163 110 98 T326 123 T302 294" fill="none" stroke="#b7b5ff" stroke-width="3" opacity=".5"/>
+    <path d="M153 219 L111 313 Q202 346 291 313 L246 218" fill="#8b51c3" stroke="#21113b" stroke-width="5"/>
+    <path d="M170 251 L150 310 M232 251 L266 312" stroke="#d3a0fa" stroke-width="5"/>
+    <path d="M116 196 Q60 177 71 222 Q88 246 125 220 M280 198 Q325 166 334 194 Q336 219 279 226" fill="url(#gold)" stroke="#643726" stroke-width="5"/>
+    <!-- Two circles create the compass rim and face. -->
+    <circle cx="201" cy="187" r="110" fill="url(#gold)" stroke="#512725" stroke-width="6"/>
+    <circle cx="201" cy="187" r="97" fill="url(#face)" stroke="#aa702a" stroke-width="3"/>
+    <path d="M201 82 L207 100 H195Z M201 290 L207 274 H195Z M100 187 L115 181 V193Z M302 187 L287 181 V193Z" fill="#ae7328"/>
+    <path d="M186 163 L250 111 L227 186 L203 207Z" fill="#49dcbc" stroke="#1f6260" stroke-width="4"/>
+    <path d="M186 163 L161 249 L203 207Z" fill="#bd8bdc" stroke="#76509e" stroke-width="3"/>
+    <circle cx="207" cy="182" r="12" fill="url(#gold)" stroke="#9a652c" stroke-width="3"/>
+    <!-- Eyes, cheeks, mouth, and eyebrows create a friendly character. -->
+    <ellipse cx="155" cy="197" rx="18" ry="25" fill="#251532"/>
+    <ellipse cx="251" cy="197" rx="18" ry="25" fill="#251532"/>
+    <ellipse cx="150" cy="189" rx="7" ry="9" fill="white"/>
+    <ellipse cx="246" cy="189" rx="7" ry="9" fill="white"/>
+    <ellipse cx="140" cy="224" rx="15" ry="8" fill="#ed8c9f"/>
+    <ellipse cx="265" cy="224" rx="15" ry="8" fill="#ed8c9f"/>
+    <path d="M184 229 Q202 240 222 228 Q213 261 194 251Z" fill="#7c2b43" stroke="#392037" stroke-width="3"/>
+    <path d="M195 249 Q205 237 214 247" fill="#ff91ab"/>
+    <path d="M139 163 Q151 153 165 163 M238 163 Q251 153 265 163" stroke="#aa6931" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <!-- Concrete examples connect the compass to behavior. -->
+    <path d="M30 35 H148 L160 56 L148 77 H30Z" fill="#5a2b69" stroke="#eccb79" stroke-width="2"/>
+    <path d="M241 25 H370 V67 H241 L227 46Z" fill="#216e65" stroke="#eccb79" stroke-width="2"/>
+    <g text-anchor="middle" font-family="system-ui" font-weight="800">
+    <text x="91" y="53" fill="#fff0dc" font-size="12">CHEAT · HARM</text>
+    <text x="91" y="68" fill="#e5b4e5" font-size="9">WRONG BEHAVIOR</text>
+    <text x="301" y="43" fill="#ecffe7" font-size="12">HONESTY · CARE</text>
+    <text x="301" y="58" fill="#b2e8d3" font-size="9">RIGHT BEHAVIOR</text>
+    </g>
+    <path d="M255 98 L267 81" stroke="#79e7c3" stroke-width="4" stroke-linecap="round"/>
+    <rect x="108" y="333" width="186" height="25" rx="12" fill="#291640" stroke="#deb968"/>
+    <text x="201" y="350" text-anchor="middle" fill="#f5d685" font-family="system-ui" font-size="11" font-weight="800" letter-spacing="1">LET PRINCIPLES GUIDE</text>
+  `;
+
+  // A loop repeats a drawing instruction. These positions are fixed so
+  // the stars stay away from the face and appear in the same place each time.
+  const starPositions = [
+    [26, 105], [53, 139], [20, 176], [62, 247], [32, 290],
+    [81, 320], [342, 105], [374, 143], [345, 235], [373, 282]
+  ];
+  const stars = document.getElementById('stars');
+  for (const position of starPositions) {
+    const x = position[0];
+    const y = position[1];
+    const radius = 5;
+    // ${...} inserts a number into the SVG text.
+    stars.innerHTML += `
+      <path d="M ${x} ${y - radius}
+               Q ${x} ${y} ${x + radius} ${y}
+               Q ${x} ${y} ${x} ${y + radius}
+               Q ${x} ${y} ${x - radius} ${y}
+               Q ${x} ${y} ${x} ${y - radius}" />`;
+  }
+}
+
+// 3B. FIND THE CONTENT AND REMEMBER PROGRESS
+// A variable is a named place to keep a value.
+// const keeps the same reference; let allows a value to change.
+// getElementById finds an HTML element using its unique id above.
+const studyScreen = document.getElementById('study');
+const quizScreen = document.getElementById('quiz');
+const doneScreen = document.getElementById('done');
+const definition = document.getElementById('definition');
+const recallPrompt = document.getElementById('prompt');
+const feedback = document.getElementById('feedback');
+const collectButton = document.getElementById('collect');
+const startButton = document.getElementById('start');
+const againButton = document.getElementById('again');
+const reviewButton = document.getElementById('review');
+const collectionCount = document.getElementById('count');
+// querySelectorAll finds a list: here, every button with class="option".
+const answerButtons = document.querySelectorAll('.option');
+
+// This Boolean (true or false) is the game's memory for this page session.
+// Reloading the page starts over. Repeating practice does not add duplicates.
+let hasCollectedCard = false;
+
+// 3C. FUNCTIONS: reusable instructions for each learning step
+// screenName is an input (called a parameter) to this function.
+// !== means "is not equal to"; === means "is equal to".
+function showScreen(screenName) {
+  studyScreen.hidden = screenName !== 'study';
+  quizScreen.hidden = screenName !== 'quiz';
+  doneScreen.hidden = screenName !== 'done';
+
+  // Retrieval practice: remove the written answer but keep the image cue.
+  definition.hidden = screenName === 'quiz';
+  recallPrompt.hidden = screenName !== 'quiz';
+}
+
+function startQuiz() {
+  showScreen('quiz');
+  feedback.textContent = '';
+  collectButton.hidden = true;
+
+  // Reset every answer so practice can be repeated.
+  for (const button of answerButtons) {
+    button.disabled = false;
+    button.classList.remove('correct', 'incorrect');
+  }
+  // Move keyboard focus to the next useful control.
+  answerButtons[0].focus();
+}
+
+function reviewCard() {
+  showScreen('study');
+  startButton.focus();
+}
+
+// 3D. CONDITIONALS: choose feedback based on the learner's answer
+function checkAnswer(selectedButton) {
+  // data-correct in the HTML stores answer information as text.
+  // An if/else chooses which instructions to run.
+  if (selectedButton.dataset.correct === 'true') {
+    selectedButton.classList.add('correct');
+    feedback.textContent = 'Exactly. Like a compass, morality guides choices about right and wrong.';
+
+    for (const button of answerButtons) {
+      button.disabled = true;
+    }
+    collectButton.hidden = false;
+
+    if (hasCollectedCard) {
+      collectButton.textContent = 'Return to my collection ✦';
+    } else {
+      collectButton.textContent = 'Add to my collection ✦';
+    }
+    collectButton.focus();
+  } else {
+    // A wrong answer offers a useful hint and permits another attempt.
+    selectedButton.classList.add('incorrect');
+    if (selectedButton.dataset.feedback === 'direction') {
+      feedback.textContent = 'The compass is a memory clue. Think about principles for behavior, rather than physical direction. Try again.';
+    } else {
+      feedback.textContent = 'That describes identity. Think about what guides right and wrong behavior. Try again.';
+    }
+  }
+}
+
+function collectCard() {
+  hasCollectedCard = true;
+  collectionCount.textContent = 'Collection · 1 / 1';
+  showScreen('done');
+  againButton.focus();
+}
+
+// 3E. EVENTS: connect a learner's action to a function
+// A click event also works when a keyboard user activates a button.
+// Passing a function name without () means "run this when clicked".
+startButton.addEventListener('click', startQuiz);
+againButton.addEventListener('click', startQuiz);
+reviewButton.addEventListener('click', reviewCard);
+collectButton.addEventListener('click', collectCard);
+
+for (const button of answerButtons) {
+  button.addEventListener('click', function () {
+    checkAnswer(button);
+  });
+}
+
+// 3F. START: draw the image once when the page loads.
+drawCompass();
+</script>
+</body>
+</html>

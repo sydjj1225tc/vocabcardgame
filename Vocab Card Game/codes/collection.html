@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Grade 9 · Vocabulary Collection</title><style>
+/* The gallery displays the three standalone offline cards. */
+*{box-sizing:border-box}body{background:#100d1c;color:#fff5dc;font-family:system-ui;margin:0;padding:24px}header{max-width:1400px;margin:auto}h1{font-size:24px;margin:0 0 8px}p{color:#c9bfd4;font-size:14px}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;max-width:1400px;margin:auto}iframe{width:100%;aspect-ratio:2/3;border:0;display:block;background:black}article a{display:block;color:#f3cc7b;padding:12px;text-align:center}footer{max-width:1400px;margin:22px auto;color:#bcb1ca;font-size:13px}footer a{color:#f3cc7b}@media(max-width:750px){.cards{grid-template-columns:1fr;max-width:480px}}
+.rarity-picker{display:block;padding:10px 12px;background:#251b32;border-radius:8px 8px 0 0;font-size:13px}.rarity-picker select{background:#342641;color:#fff3d9;border:1px solid #84708e;border-radius:5px;padding:7px;font:inherit;margin-left:8px}</style></head><body><header><h1>Word collection · Grade 9</h1><p>Rarity increases: Normal (purple) → Rare (green) → Unique (bright orange). Power points stay the same.</p></header><main class="cards">
+<article><label class="rarity-picker">Rarity <select data-word="value" aria-label="value rarity"><option value="normal">Normal · Purple</option><option value="rare">Rare · Green</option><option value="unique">Unique · Bright orange</option></select></label><iframe id="value-frame" src="value.html?embedded=1" title="Value vocabulary card"></iframe><a href="value.html">Value · 150 power points</a></article>
+<article><label class="rarity-picker">Rarity <select data-word="obtain" aria-label="obtain rarity"><option value="normal">Normal · Purple</option><option value="rare">Rare · Green</option><option value="unique">Unique · Bright orange</option></select></label><iframe id="obtain-frame" src="obtain.html?embedded=1" title="Obtain vocabulary card"></iframe><a href="obtain.html">Obtain · 130 power points</a></article>
+<article><label class="rarity-picker">Rarity <select data-word="differ" aria-label="differ rarity"><option value="normal">Normal · Purple</option><option value="rare">Rare · Green</option><option value="unique">Unique · Bright orange</option></select></label><iframe id="differ-frame" src="differ.html?embedded=1" title="Differ vocabulary card"></iframe><a href="differ.html">Differ · 110 power points</a></article>
+</main><footer>Power points are provisional learning-design estimates for all numbered headword meanings, not standardized grade-level scores. Definitions: <a href="https://www.oxfordlearnersdictionaries.com/us/definition/english/value_1">value</a> · <a href="https://www.oxfordlearnersdictionaries.com/us/definition/english/obtain">obtain</a> · <a href="https://www.oxfordlearnersdictionaries.com/us/definition/english/differ">differ</a></footer><script>
+// A selection reloads only that card with the requested color treatment.
+for (const picker of document.querySelectorAll('[data-word]')) {
+  picker.addEventListener('change', function () {
+    const word = picker.dataset.word;
+    document.getElementById(word + '-frame').src = word + '.html?embedded=1&rarity=' + picker.value;
+  });
+}
+</script></body></html>
